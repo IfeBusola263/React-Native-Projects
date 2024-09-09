@@ -3,23 +3,23 @@ import { Shadow } from "react-native-shadow-2";
 import { Colors } from "../utils/colors.js";
 
 export default function Card({ children }) {
-    const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
-    const shadowMarginLandScape = {
-	marginTop : height < 450 ? 8 : 36,
-	marginHorizontal: height < 450 ? 48 : 24
-    }
+  const shadowMarginLandScape = {
+    marginTop: height < 450 ? 8 : 36,
+    marginHorizontal: height < 450 ? 48 : 24,
+  };
 
-    const innerContainerLandScape = {
-	padding: height < 450 ? 10 : 16
-    }
-    
+  const innerContainerLandScape = {
+    padding: height < 450 ? 10 : 16,
+  };
+
   return (
     <Shadow
       stretch={true}
       distance={10}
-	containerStyle={[styles.shadow, shadowMarginLandScape]}
-	style={[styles.inputContainer, innerContainerLandScape]}
+      containerStyle={[styles.shadow, shadowMarginLandScape]}
+      style={[styles.inputContainer, innerContainerLandScape]}
       offset={[0, 3]}
     >
       <View style={styles.inputContainer}>{children}</View>

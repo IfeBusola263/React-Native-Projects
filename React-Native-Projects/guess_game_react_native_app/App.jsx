@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "./utils/colors.js";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 
 // Keep the splash screen visible while fetching resources
 
@@ -90,19 +91,22 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      style={styles.rootScreen}
-      colors={[Colors.primary500, Colors.primaryAccent]}
-    >
-      <ImageBackground
-        source={require("./assets/images/background.png")}
+    <>
+      <StatusBar style={Platform.select({ ios: "auto", android: "light" })} />
+      <LinearGradient
         style={styles.rootScreen}
-        resizeMode="cover"
-        imageStyle={styles.backgroundImage}
+        colors={[Colors.primary500, Colors.primaryAccent]}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          style={styles.rootScreen}
+          resizeMode="cover"
+          imageStyle={styles.backgroundImage}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
