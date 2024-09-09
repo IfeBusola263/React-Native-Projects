@@ -1,8 +1,17 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, useWindowDimensions } from "react-native";
 import { Colors } from "../utils/colors.js";
 
-export default function Title({ children }) {
-  return <Text style={styles.title}>{children}</Text>;
+export default function Title({ children, style }) {
+        const {width, height} = useWindowDimensions();
+
+    const landScapeView = {
+	...style,
+	fontSize : height < 450 ? 20 : 24,
+	padding : height < 450 ? 8 : 12,
+    }
+
+    
+    return <Text style={[styles.title, landScapeView]}>{children}</Text>;
 }
 
 const styles = StyleSheet.create({
@@ -14,5 +23,6 @@ const styles = StyleSheet.create({
     color: Colors.primaryWhite,
     fontSize: 24,
     fontFamily: "open-sans-bold",
+    maxWidth: "80%",
   },
 });

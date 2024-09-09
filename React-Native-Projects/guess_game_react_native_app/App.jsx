@@ -4,6 +4,7 @@ import {
   Platform,
   Text,
   View,
+  ScrollView,
 } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen.jsx";
 import { LinearGradient } from "expo-linear-gradient";

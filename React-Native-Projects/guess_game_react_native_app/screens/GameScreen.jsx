@@ -5,6 +5,7 @@ import {
   Alert,
   FlatList,
   Text,
+  useWindowDimensions,
 } from "react-native";
 import Title from "../components/Title.jsx";
 import Number from "../components/games/Number.jsx";
@@ -27,6 +28,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
   let initialGuess = generateRandomBetween(start, end, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessedNum, setGuessedNum] = useState([]);
+  const { width, height } = useWindowDimensions();
 
   // handle game over and reset boundaries for a new game
   useEffect(() => {
@@ -113,6 +115,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    alignItems: "center",
   },
   Text: {
     fontSize: 16,

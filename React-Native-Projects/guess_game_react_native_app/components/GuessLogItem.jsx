@@ -12,9 +12,8 @@ export default function GuessLogItem({ roundNumber, guessedNum }) {
       distance={4}
     >
       <View style={styles.listItem}>
-        <Text style={styles.item}>
-          #{roundNumber}: {guessedNum}
-        </Text>
+        <Text style={styles.item}>#{roundNumber}</Text>
+        <Text style={styles.item}>Opponent's Guess {guessedNum}</Text>
       </View>
     </Shadow>
   );
