@@ -6,5 +6,7 @@ export const fonts = {
   "poppins-light": require("../assets/fonts/Poppins-Light.otf"),
   "muli-bold": require("../assets/fonts/Muli-Bold.ttf"),
   "cooper-hewitt-bold": require("../assets/fonts/CooperHewitt-Bold.otf"),
-  bebas: require("../assets/fonts/Bebas-Regular.ttf"),
+    'bebas': require("../assets/fonts/Bebas-Regular.ttf"),
+    'lobster-regular': require('../assets/fonts/LobsterTwo-Regular.otf'),
+    'montserrat-med': require('../assets/fonts/MontserratAlternates-Medium.otf')
 };
