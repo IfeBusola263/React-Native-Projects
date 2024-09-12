@@ -7,14 +7,18 @@ import {
   Platform,
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
+import { useNavigation } from '@react-navigation/native';
+import MealDetails from '../components/MealDetails.jsx'
 
-export default function MealItem({
+export default function MealItem(props) {
+  const {
   title,
   imageUrl,
   duration,
   complexity,
   affordability,
-}) {
+} = props
+    const navigation = useNavigation();
   return (
     <Shadow
       stretch={true}
@@ -25,23 +29,14 @@ export default function MealItem({
       <View style={styles.container}>
         <Pressable
           android_ripple={{ color: "#ccc" }}
-          style={({ pressed }) => (pressed ? styles.pressed : null)}
+            style={({ pressed }) => (pressed ? styles.pressed : null)}
+	    onPress={() => navigation.navigate('MealDetails', {...props})}
         >
           <View>
             <Image style={styles.image} source={{ uri: imageUrl }} />
             <Text style={styles.title}>{title}</Text>
           </View>
-          <View style={styles.details}>
-            <Text style={[styles.detailsItem, { fontFamily: "open-sans" }]}>
-              {duration}
-            </Text>
-            <Text style={[styles.detailsItem, { fontFamily: "exo-semi-bold" }]}>
-              {complexity.toUpperCase()}
-            </Text>
-            <Text style={[styles.detailsItem, { fontFamily: "poppins-light" }]}>
-              {affordability.toUpperCase()}
-            </Text>
-          </View>
+            <MealDetails {...props} /> 
         </Pressable>
       </View>
     </Shadow>
@@ -72,15 +67,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     padding: 8,
-  },
-  details: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 8,
-  },
-  detailsItem: {
-    fontSize: 12,
-    marginHorizontal: 4,
-  },
+  }
 });

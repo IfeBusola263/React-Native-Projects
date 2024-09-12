@@ -29,6 +29,6 @@ export default function HeaderRight() {
 const styles = StyleSheet.create({
   text: {
     color: "white",
-    //fontFamily: "exo-semi-bold",
+    fontFamily: "exo-semi-bold",
   },
 });

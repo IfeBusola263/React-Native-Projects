@@ -8,7 +8,10 @@ const renderItem = (item, navigation) => {
       title={item.title}
       color={item.color}
       onPress={() =>
-        navigation.navigate("Meal Overview", { categoryId: item.id })
+        navigation.navigate("Meal Overview", {
+          categoryId: item.id,
+          title: item.title,
+        })
       }
     />
   );
