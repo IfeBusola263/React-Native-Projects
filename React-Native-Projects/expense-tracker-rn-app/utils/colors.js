@@ -1,0 +1,15 @@
+export const Colors = {
+    primaryWhite: 'rgba(250, 250, 250, 0.8)',
+  primary50: 'rgba(228, 217, 253, 1)',
+  primary100: 'rgba(198, 175, 252, 1)',
+  primary200: 'rgba(162, 129, 240, 1)',
+  primary400: 'rgba(87, 33, 212, 1)',
+  primary500: 'rgba(62, 4, 195, 1)',
+  primary700: 'rgba(45, 6, 137, 0.9)',
+  primary800: 'rgba(32, 3, 100, 1)',
+  accent500: 'rgba(247, 188, 12, 1)',
+  error50: 'rgba(252, 196, 228, 1)',
+  error500: 'rgba(155, 9, 92, 1)',
+  gray500: 'rgba(57, 50, 74, 1)',
+  gray700: 'rgba(34, 28, 48, 1)',
+};
