@@ -1,10 +1,14 @@
-import { View, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import { useLayoutEffect } from "react";
 import IconButton from "../components/UI/IconButton.jsx";
-import Button from "../components/UI/Button.jsx";
 import { Colors } from "../utils/colors.js";
-import { useDispatch } from "react-redux";
-import { removeExpense } from "../store/expensesSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeExpense,
+  addExpense,
+  updateExpense,
+} from "../store/expensesSlice.js";
+import ExpenseForm from "../components/ManageExpenses/ExpenseForm.jsx";
 
 export default function ManageExpensesScreen({ route, navigation }) {
   const expenseId = route.params?.expenseId;
@@ -17,6 +21,12 @@ export default function ManageExpensesScreen({ route, navigation }) {
   }, [navigation, isEditing]);
 
   const dispatch = useDispatch();
+  const expenses = useSelector((state) => state.expenses.expenses);
+  let expense;
+
+  if (isEditing) {
+    expense = expenses.find((expense) => expense.id === expenseId);
+  }
 
   function deleteExpenseHandler() {
     dispatch(removeExpense({ id: expenseId }));
@@ -27,20 +37,24 @@ export default function ManageExpensesScreen({ route, navigation }) {
     navigation.goBack();
   }
 
-  function handleConfirmation() {
+  function handleSubmit(enteredData) {
+    if (!isEditing) {
+      dispatch(addExpense({ expense: enteredData }));
+      console.log("Adding");
+    } else {
+      dispatch(updateExpense({ id: expenseId, ...enteredData }));
+    }
     navigation.goBack();
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={handleCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={handleConfirmation}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+    <KeyboardAvoidingView style={styles.container} behavior="position">
+      <ExpenseForm
+        onCancel={handleCancel}
+        confirmText={isEditing ? "Update" : "Add"}
+        onSubmit={handleSubmit}
+        expenseData={expense}
+      />
       {isEditing && (
         <View style={styles.buttonContainer}>
           <IconButton
@@ -51,7 +65,7 @@ export default function ManageExpensesScreen({ route, navigation }) {
           />
         </View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -60,15 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: Colors.primary800,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
   },
   buttonContainer: {
     marginTop: 16,
