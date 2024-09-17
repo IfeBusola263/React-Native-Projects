@@ -10,33 +10,66 @@ export default function ExpenseForm({
   onSubmit,
   expenseData,
 }) {
-  const [inputValues, setInputValues] = useState({
-    amount: expenseData ? "" + expenseData.amount : "",
-    date: expenseData ? expenseData.date : "",
-    description: expenseData ? expenseData.description : "",
+  const [inputs, setInputs] = useState({
+    amount: {
+      value: expenseData ? "" + expenseData.amount : "",
+      isValid: true,
+    },
+    date: {
+      value: expenseData ? expenseData.date : "",
+      isValid: true,
+    },
+    description: {
+      value: expenseData ? expenseData.description : "",
+      isValid: true,
+    },
   });
 
   function handleInputChange(identifier, enteredValue) {
-    setInputValues((prevInput) => ({
+    setInputs((prevInput) => ({
       ...prevInput,
-      [identifier]: enteredValue,
+      [identifier]: { value: enteredValue, isValid: true },
     }));
   }
 
   function handleConfirmation() {
     const inputData = {
-      amount: +inputValues.amount,
-      date: inputValues.date,
-      description: inputValues.description,
+      amount: +inputs.amount.value,
+      date: inputs.date.value,
+      description: inputs.description.value,
     };
 
     // validate Inputs
     const amtIsValid = !isNaN(inputData.amount) && inputData.amount > 0;
-    const dateIsValid = inputData.date.toString() !== "Invalid Date";
-    const descIsValid = inputData.description.trim() > 0;
+    const dateIsValid = new Date(inputData.date).toString() !== "Invalid Date";
+    const descIsValid = inputData.description.trim().length > 3;
+
+    if (!amtIsValid || !dateIsValid || !descIsValid) {
+      setInputs((currInputs) => {
+        return {
+          amount: {
+            value: currInputs.amount.value,
+            isValid: amtIsValid,
+          },
+          date: {
+            value: currInputs.date.value,
+            isValid: dateIsValid,
+          },
+          description: {
+            value: currInputs.description.value,
+            isValid: descIsValid,
+          },
+        };
+      });
+      return;
+    }
 
     onSubmit(inputData);
   }
+  const formIsValid =
+    !inputs.amount.isValid ||
+    !inputs.date.isValid ||
+    !inputs.description.isValid;
 
   return (
     <View style={styles.form}>
@@ -48,8 +81,9 @@ export default function ExpenseForm({
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: handleInputChange.bind(this, "amount"),
-            value: inputValues.amount,
+            value: inputs.amount.value,
           }}
+          invalid={!inputs.amount.isValid}
         />
         <Input
           label="Date"
@@ -58,19 +92,22 @@ export default function ExpenseForm({
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
             onChangeText: handleInputChange.bind(this, "date"),
-            value: inputValues.date,
+            value: inputs.date.value,
           }}
+          invalid={!inputs.date.isValid}
         />
       </View>
       <Input
         label="Description"
         textInputConfig={{
           multiline: true,
+          placeholder: "Your Description should be above 3 characters",
           onChangeText: handleInputChange.bind(this, "description"),
-          value: inputValues.description,
+          value: inputs.description.value,
         }}
+        invalid={!inputs.description.isValid}
       />
-
+      {formIsValid && <Text style={styles.errorText}>Check your inputs</Text>}
       <View style={styles.buttons}>
         <Button style={styles.button} mode="flat" onPress={onCancel}>
           Cancel
@@ -100,6 +137,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flex: 1,
+  },
+  errorText: {
+    fontFamily: "muli-bold",
+    color: Colors.error500,
+    textAlign: "center",
+    margin: 8,
   },
   buttons: {
     flexDirection: "row",

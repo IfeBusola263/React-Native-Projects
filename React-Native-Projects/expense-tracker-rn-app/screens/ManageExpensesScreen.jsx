@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import IconButton from "../components/UI/IconButton.jsx";
 import { Colors } from "../utils/colors.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +9,13 @@ import {
   updateExpense,
 } from "../store/expensesSlice.js";
 import ExpenseForm from "../components/ManageExpenses/ExpenseForm.jsx";
+import { storeExpenses, modifyExpense, deleteExpense } from "../utils/http.js";
+import LoadingOverlay from "../components/UI/LoadingOverlay.jsx";
+import ErrorOverlay from "../components/UI/ErrorOverlay.jsx";
 
 export default function ManageExpensesScreen({ route, navigation }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
 
@@ -28,23 +33,52 @@ export default function ManageExpensesScreen({ route, navigation }) {
     expense = expenses.find((expense) => expense.id === expenseId);
   }
 
-  function deleteExpenseHandler() {
-    dispatch(removeExpense({ id: expenseId }));
-    navigation.goBack();
+  async function deleteExpenseHandler() {
+    setIsSubmitting(true);
+    try {
+      await deleteExpense(expenseId);
+      dispatch(removeExpense({ id: expenseId }));
+      navigation.goBack();
+    } catch (err) {
+      setIsSubmitting(false);
+      setError("Could not Delete Expense");
+    }
   }
 
   function handleCancel() {
     navigation.goBack();
   }
 
-  function handleSubmit(enteredData) {
+  async function handleSubmit(enteredData) {
+    setIsSubmitting(true);
     if (!isEditing) {
-      dispatch(addExpense({ expense: enteredData }));
-      console.log("Adding");
+      try {
+        const id = await storeExpenses(enteredData);
+        enteredData.id = id;
+        dispatch(addExpense({ expense: enteredData }));
+        navigation.goBack();
+      } catch (err) {
+        setIsSubmitting(false);
+        setError("Could not add a new Expense, Something went wrong!");
+      }
     } else {
-      dispatch(updateExpense({ id: expenseId, ...enteredData }));
+      try {
+        await modifyExpense(expenseId, enteredData); // for https request
+        dispatch(updateExpense({ id: expenseId, ...enteredData })); // for store
+        navigation.goBack();
+      } catch (err) {
+        setIsSubmitting(false);
+        setError("Could not Update this Expense try again!");
+      }
     }
-    navigation.goBack();
+  }
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} />;
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (

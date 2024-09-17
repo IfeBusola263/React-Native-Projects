@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 export default function AllExpensesScreen() {
   const expensesData = useSelector((state) => state.expenses.expenses);
+
   return (
     <ExpensesOutput
       expenses={expensesData}
