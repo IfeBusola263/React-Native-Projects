@@ -1,5 +1,19 @@
 This repo contains projects showing core react concepts and their diffent real life use case.
 
+Usage:
+
+kindly make sure to have npm, node, expo installed
+
+```
+- Clone any of the app folders
+- cd [app folder]
+- npm install (to get all dependencies)
+- npm start (to start app)
+```
+
+Use Expo go app for best experience.
+
+
 
 * auth_stack_rn_app
 ```
