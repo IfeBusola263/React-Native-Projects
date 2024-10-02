@@ -6,7 +6,6 @@ import IconButton from "../components/UI/IconButton";
 import { Alert } from "react-native";
 
 export default function Map({ navigation, route }) {
-  const [markerCoords, setMarkerCoords] = useState();
   const initialCoords = route.params && route.params.coords;
 
   const coordinates = {
@@ -15,6 +14,8 @@ export default function Map({ navigation, route }) {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
+
+  const [markerCoords, setMarkerCoords] = useState(initialCoords);
 
   function markerHandler(event) {
     setMarkerCoords({
@@ -51,7 +52,7 @@ export default function Map({ navigation, route }) {
     <MapView
       initialRegion={coordinates}
       style={styles.map}
-      onPress={markerHandler}
+      onPress={!initialCoords && markerHandler}
     >
       {markerCoords && (
         <Marker
@@ -59,6 +60,7 @@ export default function Map({ navigation, route }) {
             latitude: markerCoords.lat,
             longitude: markerCoords.lng,
           }}
+          title="This is the Location"
         />
       )}
     </MapView>
