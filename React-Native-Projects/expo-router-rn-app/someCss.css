@@ -1,0 +1,38 @@
+.red-bg{
+    border: 1px solid teal;
+    width: 50%
+}
+
+.list{
+    list-style: none;
+    padding-left: 0;
+}
+
+.invisible {
+    display: none;
+}
+
+.button-container {
+    border: 1px solid teal;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    /* align-items: center; */
+    overflow: hidden;
+}
+
+button {
+    border: none;
+    /* align-self: center;
+    border-radius: 10px; */
+    padding: 0.5rem 1rem;
+    width: 100%;
+}
+
+.schedule-container{
+    border: 1px solid tomato;
+    width: 20%;
+    height: 100px;
+    background-color: rgba(82, 28, 28, 0.355);  
+}
